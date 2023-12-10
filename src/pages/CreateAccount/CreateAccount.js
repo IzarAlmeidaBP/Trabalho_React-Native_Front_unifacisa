@@ -1,23 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   TextInput,
   TouchableOpacity,
+  ToastAndroid,
+  ScrollView,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
+import httpservice from '../../routes/http';
 
 export default function CreateAccount() {
   const navigation = useNavigation();
 
-  const goToAuthScreens = () => {
-    navigation.navigate('AuthScreens');
+  const [cpf, setCpf] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmpassword, setConfirmPassword] = useState('');
+
+  const onSubmit = async () => {
+    const user = { cpf, name, email, password, confirmpassword };
+    const result = await httpservice.createUser(user);
+    const data = await result.json();
+    ToastAndroid.show(data.message, 2000);
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="handled"
+    >
       <Animatable.View
         animation="fadeInLeft"
         delay={500}
@@ -26,33 +41,66 @@ export default function CreateAccount() {
         <Text style={styles.headerText}>Crie sua Conta</Text>
       </Animatable.View>
       <Animatable.View animation="fadeInUp" style={styles.containerForm}>
+        <Text style={styles.title}>CPF</Text>
+        <TextInput
+          placeholder="Digite seu CPF..."
+          style={styles.input}
+          value={cpf}
+          onChange={(event) => {
+            setCpf(event.nativeEvent.text);
+          }}
+        />
         <Text style={styles.title}>Nome Completo</Text>
         <TextInput
           placeholder="Digite seu nome completo..."
           style={styles.input}
+          value={name}
+          onChange={(event) => {
+            setName(event.nativeEvent.text);
+          }}
         />
         <Text style={styles.title}>Email</Text>
-        <TextInput placeholder="Digite seu email..." style={styles.input} />
+        <TextInput
+          placeholder="Digite seu email..."
+          style={styles.input}
+          value={email}
+          onChange={(event) => {
+            setEmail(event.nativeEvent.text);
+          }}
+        />
         <Text style={styles.title}>Senha</Text>
         <TextInput
           placeholder="Digite sua senha"
           style={styles.input}
           secureTextEntry={true}
+          value={password}
+          onChange={(event) => {
+            setPassword(event.nativeEvent.text);
+          }}
         />
-        <TouchableOpacity style={styles.button} onPress={goToAuthScreens}>
+        <Text style={styles.title}>Confirme sua senha</Text>
+        <TextInput
+          placeholder="Confirme sua senha"
+          style={styles.input}
+          secureTextEntry={true}
+          value={confirmpassword}
+          onChange={(event) => {
+            setConfirmPassword(event.nativeEvent.text);
+          }}
+        />
+        <TouchableOpacity style={styles.button} onPress={() => onSubmit()}>
           <Text style={styles.buttonText}>Cadastrar</Text>
         </TouchableOpacity>
       </Animatable.View>
-    </View>
+    </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#F4EEE7',
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#F4EEE7',
   },
   containerHeader: {
     fontSize: 24,
