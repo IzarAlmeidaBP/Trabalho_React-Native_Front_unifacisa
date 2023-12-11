@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import carrinhoIcon from '../../../assets/carrinhoicon.png';
 import chatIcon from '../../../assets/chaticon.png';
+import { Ionicons, Entypo } from '@expo/vector-icons';
 
 const ProductScreen = ({ navigation }) => {
   const products = [
@@ -26,13 +27,11 @@ const ProductScreen = ({ navigation }) => {
       price: 'R$ 130,00',
       image: require('../../../assets/camisa.png'),
     },
-    // Adicione mais produtos conforme necessário
   ];
 
   const handleAddToCart = (productId) => {
     console.log(`Produto ${productId} adicionado à cesta!`);
   };
-
 
   const goToChatPage = () => {
     navigation.navigate('Chat');
@@ -40,6 +39,9 @@ const ProductScreen = ({ navigation }) => {
 
   const goToCartPage = () => {
     navigation.navigate('Cart');
+  };
+  const goToUserPage = () => {
+    navigation.navigate('User');
   };
 
   const renderProductItem = ({ item }) => (
@@ -61,6 +63,12 @@ const ProductScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <FlatList
+        data={products}
+        renderItem={renderProductItem}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={styles.productsList}
+      />
       <View style={styles.navBar}>
         <TouchableOpacity style={styles.navBarButton} onPress={goToChatPage}>
           <Image source={chatIcon} style={styles.icon} />
@@ -68,17 +76,13 @@ const ProductScreen = ({ navigation }) => {
         <TouchableOpacity style={styles.navBarButton} onPress={goToCartPage}>
           <Image source={carrinhoIcon} style={styles.icon} />
         </TouchableOpacity>
+        <TouchableOpacity style={styles.navBarButton} onPress={goToUserPage}>
+          <Ionicons name="man" size={30} color="white" />
+        </TouchableOpacity>
       </View>
-      <FlatList
-        data={products}
-        renderItem={renderProductItem}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.productsList}
-      />
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -86,11 +90,10 @@ const styles = StyleSheet.create({
   },
   navBar: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: '#2A9F85',
     paddingVertical: 10,
-    paddingHorizontal: 20,
   },
   navBarButton: {
     padding: 10,

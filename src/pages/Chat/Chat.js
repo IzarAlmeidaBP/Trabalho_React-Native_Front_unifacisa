@@ -1,4 +1,3 @@
-// Chat.js
 import React, { useState } from 'react';
 import {
   View,
@@ -11,6 +10,7 @@ import {
 import chatIcon from '../../../assets/chaticon.png';
 import logo from '../../../assets/logo.png';
 import carrinhoIcon from '../../../assets/carrinhoicon.png';
+import { Ionicons, Entypo } from '@expo/vector-icons';
 
 const Chat = ({ navigation }) => {
   const [message, setMessage] = useState('');
@@ -19,8 +19,8 @@ const Chat = ({ navigation }) => {
     navigation.navigate('Cart');
   };
 
-  const goToProductsPage = () => {
-    navigation.navigate('Products');
+  const goToHomePage = () => {
+    navigation.navigate('ProductScreen');
   };
 
   const sendMessage = () => {
@@ -30,20 +30,6 @@ const Chat = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.navBar}>
-        <TouchableOpacity style={styles.navBarButton} onPress={goToCartPage}>
-          <Image source={carrinhoIcon} style={styles.icon} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.logoContainer}
-          onPress={goToProductsPage}
-        >
-          <Image source={logo} style={styles.logo} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navBarButton} onPress={goToCartPage}>
-          <Image source={chatIcon} style={styles.icon} />
-        </TouchableOpacity>
-      </View>
       <View style={styles.chatContainer}>
         <Text style={styles.chatText}>Chat Screen</Text>
         <View style={styles.chatBox}>
@@ -58,10 +44,20 @@ const Chat = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
+      <View style={styles.navBar}>
+        <TouchableOpacity style={styles.navBarButton}>
+          <Entypo name="home" size={30} color="white" onPress={goToHomePage} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navBarButton} onPress={goToCartPage}>
+          <Image source={carrinhoIcon} style={styles.icon} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navBarButton}>
+          <Ionicons name="man" size={30} color="white" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

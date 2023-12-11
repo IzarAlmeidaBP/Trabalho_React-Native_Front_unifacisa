@@ -7,8 +7,9 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
+import { Ionicons, Entypo } from '@expo/vector-icons';
 import chatIcon from '../../../assets/chaticon.png';
-import logo from '../../../assets/logo.png';
+import User from '../User/User';
 
 const Cart = ({ navigation }) => {
   const cartItems = [
@@ -29,23 +30,16 @@ const Cart = ({ navigation }) => {
   const goToChatPage = () => {
     navigation.navigate('Chat');
   };
-  const goToProductPage = () => {
+
+  const goToHomePage = () => {
     navigation.navigate('ProductScreen');
+  };
+  const goToUserPage = () => {
+    navigation.navigate('User');
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.navBar}>
-        <TouchableOpacity style={styles.navBarButton} onPress={goToProductPage}>
-          <Image source={logo} style={styles.icon} />
-        </TouchableOpacity>
-
-        <View style={{ flex: 1 }} />
-
-        <TouchableOpacity style={styles.navBarButton} onPress={goToChatPage}>
-          <Image source={chatIcon} style={styles.icon} />
-        </TouchableOpacity>
-      </View>
       <View style={styles.cartItemsContainer}>
         <FlatList
           data={cartItems}
@@ -59,13 +53,30 @@ const Cart = ({ navigation }) => {
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={styles.cartItemsList}
         />
+
+        <TouchableOpacity style={styles.checkoutButton}>
+          <Text style={styles.checkoutText}>Finalizar Compra</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.checkoutButton}>
-        <Text style={styles.checkoutText}>Finalizar Compra</Text>
-      </TouchableOpacity>
+
+      <View style={styles.navBar}>
+        <TouchableOpacity style={styles.navBarButton}>
+          <Entypo name="home" size={30} color="white" onPress={goToHomePage} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navBarButton} onPress={goToChatPage}>
+          <Image
+            source={chatIcon}
+            style={[styles.icon, { tintColor: 'white' }]}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navBarButton}>
+          <Ionicons name="man" size={30} color="white" onPress={goToUserPage} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -73,25 +84,32 @@ const styles = StyleSheet.create({
   },
   navBar: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: '#2A9F85',
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 0,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
   navBarButton: {
+    flex: 1,
+    alignItems: 'center',
     padding: 10,
   },
   icon: {
-    width: 30,
-    height: 30,
+    width: 24,
+    height: 24,
     resizeMode: 'contain',
-    tintColor: '#F4EEE7',
+    tintColor: 'black',
   },
   cartItemsContainer: {
     flex: 1,
     paddingHorizontal: 20,
     paddingVertical: 10,
+    paddingBottom: 60, // Added padding for the navBar to be above
   },
   cartItem: {
     backgroundColor: '#FFFFFF',
