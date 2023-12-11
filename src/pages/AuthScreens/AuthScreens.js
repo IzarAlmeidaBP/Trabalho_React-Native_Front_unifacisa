@@ -1,22 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
+import httpservice from '../../routes/http';
 
 export default function AuthScreens() {
   const navigation = useNavigation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const goToProductScreen = () => {
     navigation.navigate('ProductScreen');
   };
+
   const goToCreateAccount = () => {
     navigation.navigate('CreateAccount');
+  };
+
+  const login = async () => {
+    try {
+      const user = { email, password };
+      const result = await httpservice.login(user);
+      const data = await result.json();
+
+      if (result.status === 200) {
+        console.log('Mensagem de sucesso:', data.msg);
+        navigation.navigate('ProductScreen');
+      } else {
+        console.error('Mensagem de erro:', data.msg);
+        Alert.alert(
+          'Erro',
+          'Erro ao realizar o login. Tente novamente.',
+          data.msg,
+        );
+      }
+    } catch (error) {
+      console.error('Erro ao logar:', error);
+      Alert.alert('Erro', 'Aconteceu um erro. Tente novamente mais tarde.');
+    }
   };
 
   return (
@@ -33,9 +61,17 @@ export default function AuthScreens() {
         <TextInput
           placeholder="Digite seu email..."
           style={styles.input}
-        ></TextInput>
-        <TextInput placeholder="Sua senha" style={styles.input}></TextInput>
-        <TouchableOpacity style={styles.button} onPress={goToProductScreen}>
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+        />
+        <TextInput
+          placeholder="Sua senha"
+          style={styles.input}
+          secureTextEntry={true}
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+        />
+        <TouchableOpacity style={styles.button} onPress={login}>
           <Text style={styles.buttonText}>Acessar</Text>
         </TouchableOpacity>
         <TouchableOpacity

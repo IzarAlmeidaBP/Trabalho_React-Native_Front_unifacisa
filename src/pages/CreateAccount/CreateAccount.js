@@ -5,8 +5,8 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  ToastAndroid,
   ScrollView,
+  Alert,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
@@ -22,16 +22,37 @@ export default function CreateAccount() {
   const [confirmpassword, setConfirmPassword] = useState('');
 
   const onSubmit = async () => {
-    const user = { cpf, name, email, password, confirmpassword };
-    const result = await httpservice.createUser(user);
-    const data = await result.json();
-    ToastAndroid.show(data.message, 2000);
+    try {
+      const user = { cpf, name, email, password, confirmpassword };
+      const result = await httpservice.createUser(user);
+      const data = await result.json();
+
+      console.log('Resposta completa:', data);
+
+      if (result.status === 201) {
+        console.log('Mensagem de sucesso:', data.message);
+        Alert.alert('Sucesso', 'Cadastro realizado com sucesso.');
+        navigation.navigate('AuthScreens');
+      } else {
+        console.error('Mensagem de erro:', data.message);
+        Alert.alert(
+          'Erro',
+          `Erro ao realizar o cadastro. Tente novamente. Detalhes: ${data.message}`,
+        );
+      }
+    } catch (error) {
+      console.error('Erro ao cadastrar:', error);
+      Alert.alert(
+        'Erro',
+        `Aconteceu um erro. Tente novamente mais tarde. Detalhes: ${error.message}`,
+      );
+    }
   };
 
   return (
     <ScrollView
-      contentContainerStyle={styles.container}
-      keyboardShouldPersistTaps="handled"
+      style={styles.container}
+      keyboardShouldPersistTaps="handled" // Permitir fechar o teclado ao tocar fora dos inputs
     >
       <Animatable.View
         animation="fadeInLeft"
@@ -46,27 +67,21 @@ export default function CreateAccount() {
           placeholder="Digite seu CPF..."
           style={styles.input}
           value={cpf}
-          onChange={(event) => {
-            setCpf(event.nativeEvent.text);
-          }}
+          onChangeText={(text) => setCpf(text)}
         />
         <Text style={styles.title}>Nome Completo</Text>
         <TextInput
           placeholder="Digite seu nome completo..."
           style={styles.input}
           value={name}
-          onChange={(event) => {
-            setName(event.nativeEvent.text);
-          }}
+          onChangeText={(text) => setName(text)}
         />
         <Text style={styles.title}>Email</Text>
         <TextInput
           placeholder="Digite seu email..."
           style={styles.input}
           value={email}
-          onChange={(event) => {
-            setEmail(event.nativeEvent.text);
-          }}
+          onChangeText={(text) => setEmail(text)}
         />
         <Text style={styles.title}>Senha</Text>
         <TextInput
@@ -74,9 +89,7 @@ export default function CreateAccount() {
           style={styles.input}
           secureTextEntry={true}
           value={password}
-          onChange={(event) => {
-            setPassword(event.nativeEvent.text);
-          }}
+          onChangeText={(text) => setPassword(text)}
         />
         <Text style={styles.title}>Confirme sua senha</Text>
         <TextInput
@@ -84,27 +97,24 @@ export default function CreateAccount() {
           style={styles.input}
           secureTextEntry={true}
           value={confirmpassword}
-          onChange={(event) => {
-            setConfirmPassword(event.nativeEvent.text);
-          }}
+          onChangeText={(text) => setConfirmPassword(text)}
         />
-        <TouchableOpacity style={styles.button} onPress={() => onSubmit()}>
+        <TouchableOpacity style={styles.button} onPress={onSubmit}>
           <Text style={styles.buttonText}>Cadastrar</Text>
         </TouchableOpacity>
       </Animatable.View>
     </ScrollView>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flex: 1,
     backgroundColor: '#F4EEE7',
+    paddingTop: 40,
   },
   containerHeader: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    alignItems: 'center',
     marginBottom: 20,
   },
   headerText: {
@@ -116,7 +126,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#72AB86',
     borderRadius: 15,
     padding: 20,
-    width: '80%',
+    marginHorizontal: 20,
   },
   title: {
     color: '#F4EEE7',
