@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   FlatList,
-  Alert,
   Image,
+  Alert,
 } from 'react-native';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import chatIcon from '../../../assets/chaticon.png';
@@ -14,6 +14,8 @@ import { useCart } from './CartContext';
 
 const Cart = ({ navigation }) => {
   const { cartItems, removeFromCart } = useCart();
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [purchasedItems, setPurchasedItems] = useState([]);
 
   const handleRemoveFromCart = (productId) => {
     const selectedProduct = cartItems.find(
@@ -24,6 +26,25 @@ const Cart = ({ navigation }) => {
       removeFromCart(selectedProduct);
       console.log(`Produto ${productId} removido da cesta!`);
     }
+  };
+
+  const handleCheckout = () => {
+    setPurchasedItems([...cartItems]);
+    setShowConfirmation(true);
+  };
+
+  const handleCloseConfirmation = () => {
+    setShowConfirmation(false);
+    setPurchasedItems([]);
+  };
+
+  const renderPurchasedItems = () => {
+    return purchasedItems.map((item) => (
+      <View style={styles.purchasedItem} key={item.id}>
+        <Text style={styles.itemName}>{item.name}</Text>
+        <Text style={styles.itemPrice}>{item.price}</Text>
+      </View>
+    ));
   };
 
   const goToChatPage = () => {
@@ -57,7 +78,10 @@ const Cart = ({ navigation }) => {
           contentContainerStyle={styles.cartItemsList}
         />
 
-        <TouchableOpacity style={styles.checkoutButton}>
+        <TouchableOpacity
+          style={styles.checkoutButton}
+          onPress={handleCheckout}
+        >
           <Text style={styles.checkoutText}>Finalizar compra</Text>
         </TouchableOpacity>
       </View>
@@ -76,6 +100,25 @@ const Cart = ({ navigation }) => {
           <Ionicons name="man" size={30} color="white" onPress={goToUserPage} />
         </TouchableOpacity>
       </View>
+
+      {/* Alerta de confirmação de compra */}
+      {showConfirmation && (
+        <View style={styles.overlay}>
+          <View style={styles.alert}>
+            <Text style={styles.alertTitle}>Compra realizada com sucesso!</Text>
+            <Text style={styles.alertSubtitle}>Produtos comprados:</Text>
+            <View style={styles.purchasedItemsContainer}>
+              {renderPurchasedItems()}
+            </View>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={handleCloseConfirmation}
+            >
+              <Text style={styles.closeButtonText}>Fechar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -156,6 +199,52 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 5,
     alignItems: 'center',
+  },
+  // Estilos para o alerta personalizado
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  alert: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+    alignItems: 'center',
+  },
+  alertTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  alertSubtitle: {
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  purchasedItemsContainer: {
+    marginTop: 10,
+  },
+  purchasedItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 5,
+  },
+  closeButton: {
+    marginTop: 20,
+    backgroundColor: '#72AB86',
+    borderRadius: 8,
+    padding: 10,
+  },
+  closeButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 
