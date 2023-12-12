@@ -3,39 +3,39 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   TouchableOpacity,
   FlatList,
+  Alert,
+  Image,
 } from 'react-native';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import chatIcon from '../../../assets/chaticon.png';
-import User from '../User/User';
+import { useCart } from './CartContext';
 
 const Cart = ({ navigation }) => {
-  const cartItems = [
-    {
-      id: 1,
-      name: 'Camiseta Esportiva 1',
-      price: 'R$ 120,00',
-      quantity: 1,
-    },
-    {
-      id: 2,
-      name: 'Camiseta Esportiva 2',
-      price: 'R$ 130,00',
-      quantity: 2,
-    },
-  ];
+  const { cartItems, removeFromCart } = useCart();
+
+  const handleRemoveFromCart = (productId) => {
+    const selectedProduct = cartItems.find(
+      (product) => product.id === productId,
+    );
+
+    if (selectedProduct) {
+      removeFromCart(selectedProduct);
+      console.log(`Produto ${productId} removido da cesta!`);
+    }
+  };
 
   const goToChatPage = () => {
     navigation.navigate('Chat');
   };
 
-  const goToHomePage = () => {
-    navigation.navigate('ProductScreen');
-  };
   const goToUserPage = () => {
     navigation.navigate('User');
+  };
+
+  const goToHomePage = () => {
+    navigation.navigate('ProductScreen');
   };
 
   return (
@@ -48,6 +48,9 @@ const Cart = ({ navigation }) => {
               <Text style={styles.itemName}>{item.name}</Text>
               <Text style={styles.itemPrice}>{item.price}</Text>
               <Text style={styles.itemQuantity}>Quantity: {item.quantity}</Text>
+              <TouchableOpacity onPress={() => handleRemoveFromCart(item.id)}>
+                <Text style={styles.removeItem}>Remover do carrinho</Text>
+              </TouchableOpacity>
             </View>
           )}
           keyExtractor={(item) => item.id.toString()}
@@ -55,7 +58,7 @@ const Cart = ({ navigation }) => {
         />
 
         <TouchableOpacity style={styles.checkoutButton}>
-          <Text style={styles.checkoutText}>Finalizar Compra</Text>
+          <Text style={styles.checkoutText}>Finalizar compra</Text>
         </TouchableOpacity>
       </View>
 
@@ -109,7 +112,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    paddingBottom: 60, // Added padding for the navBar to be above
+    paddingBottom: 60,
   },
   cartItem: {
     backgroundColor: '#FFFFFF',
@@ -142,6 +145,17 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#F4EEE7',
+  },
+  removeItem: {
+    backgroundColor: '#72AB86',
+    borderRadius: 8,
+    color: 'white',
+    fontSize: 20,
+    margin: 10,
+    paddingLeft: 50,
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: 'center',
   },
 });
 

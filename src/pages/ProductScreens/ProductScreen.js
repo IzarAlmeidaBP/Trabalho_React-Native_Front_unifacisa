@@ -11,8 +11,12 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import carrinhoIcon from '../../../assets/carrinhoicon.png';
 import chatIcon from '../../../assets/chaticon.png';
+import { useCart } from '../Cart/CartContext';
+import { useNavigation } from '@react-navigation/native';
 
-const ProductScreen = ({ navigation }) => {
+const ProductScreen = () => {
+  const navigation = useNavigation();
+  const { addToCart } = useCart();
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -36,7 +40,18 @@ const ProductScreen = ({ navigation }) => {
   };
 
   const handleAddToCart = (productId) => {
-    console.log(`Produto ${productId} adicionado à cesta!`);
+    const selectedProduct = products.find(
+      (product) => product.id === productId,
+    );
+
+    if (selectedProduct) {
+      addToCart(selectedProduct);
+      console.log(`Produto ${productId} adicionado à cesta!`);
+    }
+  };
+
+  const handleAddToFavorites = (productId) => {
+    console.log(`Produto ${productId} adicionado aos favoritos!`);
   };
 
   const goToChatPage = () => {
@@ -64,10 +79,16 @@ const ProductScreen = ({ navigation }) => {
         <Text style={styles.price}>{item.price}</Text>
       </View>
       <TouchableOpacity
-        style={styles.button}
+        style={styles.cartButton}
         onPress={() => handleAddToCart(item.id)}
       >
         <Text style={styles.buttonText}>Adicionar à Cesta</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.favoriteButton}
+        onPress={() => handleAddToFavorites(item.id)}
+      >
+        <Text style={styles.favoriteButtonText}>Adicionar aos Favoritos</Text>
       </TouchableOpacity>
     </View>
   );
@@ -89,6 +110,12 @@ const ProductScreen = ({ navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.navBarButton} onPress={goToUserPage}>
           <Ionicons name="man" size={30} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.navBarButton}
+          onPress={handleAddToFavorites}
+        >
+          <Ionicons name="heart" size={24} color="white" />
         </TouchableOpacity>
       </View>
     </View>
@@ -153,6 +180,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#72AB86',
     borderRadius: 8,
     padding: 12,
@@ -164,5 +193,30 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#F4EEE7',
   },
+  cartButton: {
+    backgroundColor: '#72AB86', // Cor para adicionar à cesta
+    borderRadius: 8,
+    padding: 12,
+    alignItems: 'center',
+    marginVertical: 5,
+  },
+  favoriteButton: {
+    backgroundColor: '#2A9F85', // Cor para adicionar aos favoritos
+    borderRadius: 8,
+    padding: 12,
+    alignItems: 'center',
+    marginVertical: 5,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#F4EEE7',
+  },
+  favoriteButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#F4EEE7',
+  },
 });
+
 export default ProductScreen;

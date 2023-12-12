@@ -52,9 +52,6 @@ const User = () => {
           value={name}
           onChangeText={(text) => setName(text)}
         />
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-          <Text style={styles.loginButtonText}>Entrar</Text>
-        </TouchableOpacity>
       </View>
       <View style={styles.navBar}>
         <TouchableOpacity style={styles.navBarButton} onPress={goToHomePage}>
