@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,28 +6,34 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  Alert,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import carrinhoIcon from '../../../assets/carrinhoicon.png';
 import chatIcon from '../../../assets/chaticon.png';
-import { Ionicons, Entypo } from '@expo/vector-icons';
 
 const ProductScreen = ({ navigation }) => {
-  const products = [
-    {
-      id: 1,
-      name: 'Camiseta Esportiva 1',
-      description: 'Descrição da camiseta esportiva 1.',
-      price: 'R$ 120,00',
-      image: require('../../../assets/camisa.png'),
-    },
-    {
-      id: 2,
-      name: 'Camiseta Esportiva 2',
-      description: 'Descrição da camiseta esportiva 2.',
-      price: 'R$ 130,00',
-      image: require('../../../assets/camisa.png'),
-    },
-  ];
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch('http://192.168.0.13:3000/api/product');
+      const data = await response.json();
+
+      if (response.status === 200) {
+        setProducts(data);
+      } else {
+        Alert.alert('Erro', 'Erro ao carregar produtos do servidor');
+      }
+    } catch (error) {
+      console.error('Erro ao carregar produtos:', error);
+      Alert.alert('Erro', 'Aconteceu um erro. Tente novamente mais tarde.');
+    }
+  };
 
   const handleAddToCart = (productId) => {
     console.log(`Produto ${productId} adicionado à cesta!`);
@@ -40,13 +46,18 @@ const ProductScreen = ({ navigation }) => {
   const goToCartPage = () => {
     navigation.navigate('Cart');
   };
+
   const goToUserPage = () => {
     navigation.navigate('User');
   };
 
   const renderProductItem = ({ item }) => (
     <View style={styles.item}>
-      <Image source={item.image} style={styles.image} resizeMode="cover" />
+      <Image
+        source={{ uri: item.image }}
+        style={styles.image}
+        resizeMode="cover"
+      />
       <View style={styles.detailsContainer}>
         <Text style={styles.name}>{item.name}</Text>
         <Text style={styles.description}>{item.description}</Text>
@@ -83,6 +94,7 @@ const ProductScreen = ({ navigation }) => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -153,5 +165,4 @@ const styles = StyleSheet.create({
     color: '#F4EEE7',
   },
 });
-
 export default ProductScreen;

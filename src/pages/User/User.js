@@ -8,19 +8,28 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import chatIcon from '../../../assets/chaticon.png';
 
 const User = () => {
+  const navigation = useNavigation();
   const [name, setName] = useState('');
-  const [profilePic, setProfilePic] = useState(null); // Estado para a imagem de perfil
+  const [profilePic, setProfilePic] = useState(null);
 
-  const handleLogin = () => {
-    // Lógica de login (pode ser validação, autenticação, etc.)
-    // Aqui você pode implementar a lógica para navegar para outras telas após o login ser realizado com sucesso
+  const handleLogin = () => {};
+
+  const handleChoosePhoto = () => {};
+
+  const goToHomePage = () => {
+    navigation.navigate('ProductScreen');
   };
 
-  const handleChoosePhoto = () => {
-    // Lógica para escolher uma foto da galeria
-    // Isso pode ser feito usando a API de seleção de imagem do React Native
+  const goToCartPage = () => {
+    navigation.navigate('Cart');
+  };
+
+  const goToChatPage = () => {
+    navigation.navigate('Chat');
   };
 
   return (
@@ -48,14 +57,14 @@ const User = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.navBar}>
-        <TouchableOpacity style={styles.navBarButton}>
-          <Ionicons name="home" size={24} color="black" />
+        <TouchableOpacity style={styles.navBarButton} onPress={goToHomePage}>
+          <Ionicons name="home" size={24} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navBarButton}>
-          <Ionicons name="cart" size={24} color="black" />
+        <TouchableOpacity style={styles.navBarButton} onPress={goToCartPage}>
+          <Ionicons name="cart" size={24} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navBarButton}>
-          <Ionicons name="person" size={24} color="black" />
+        <TouchableOpacity style={styles.navBarButton} onPress={goToChatPage}>
+          <Image source={chatIcon} style={styles.icon} />
         </TouchableOpacity>
       </View>
     </View>
@@ -109,7 +118,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: '#E5E5E5',
+    backgroundColor: '#2A9F85',
     width: '100%',
     position: 'absolute',
     bottom: 0,
@@ -119,6 +128,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     padding: 10,
+  },
+  icon: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+    tintColor: '#F4EEE7',
   },
 });
 
