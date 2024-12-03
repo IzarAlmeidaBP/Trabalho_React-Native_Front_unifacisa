@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
+import { Button, TextInput as PaperTextInput } from 'react-native-paper'; // Importando componentes do react-native-paper
 import httpservice from '../../routes/http';
 
 export default function AuthScreens() {
@@ -20,8 +21,8 @@ export default function AuthScreens() {
     navigation.navigate('ProductScreen');
   };
 
-  const goToCreateAccount = () => {
-    navigation.navigate('CreateAccount');
+  const goToTelaCadastro = () => {
+    navigation.navigate('TelaCadastro');
   };
 
   const login = async () => {
@@ -57,26 +58,32 @@ export default function AuthScreens() {
         <Text style={styles.headerText}>Bem-Vindo(a)</Text>
       </Animatable.View>
       <Animatable.View animation="fadeInUp" style={styles.containerForm}>
-        <Text style={styles.title}>Email</Text>
-        <TextInput
+        <PaperTextInput
           placeholder="Digite seu email..."
           style={styles.input}
           value={email}
           onChangeText={(text) => setEmail(text)}
+          mode="outlined"
         />
-        <TextInput
+        <PaperTextInput
           placeholder="Sua senha"
           style={styles.input}
           secureTextEntry={true}
           value={password}
           onChangeText={(text) => setPassword(text)}
+          mode="outlined"
         />
-        <TouchableOpacity style={styles.button} onPress={login}>
-          <Text style={styles.buttonText}>Acessar</Text>
-        </TouchableOpacity>
+        <Button
+          mode="contained"
+          style={styles.button}
+          labelStyle={styles.buttonText}
+          onPress={login}
+        >
+          Acessar
+        </Button>
         <TouchableOpacity
           style={styles.buttonRegister}
-          onPress={goToCreateAccount}
+          onPress={goToTelaCadastro}
         >
           <Text style={styles.registerText}>
             Não possui uma conta? Cadastre-se
@@ -90,7 +97,7 @@ export default function AuthScreens() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F4EEE7',
+    backgroundColor: '#EAF6FF',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -100,29 +107,22 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   headerText: {
-    color: '#72AB86',
+    color: '#1E90FF',
     fontSize: 24,
     fontWeight: 'bold',
   },
   containerForm: {
-    backgroundColor: '#72AB86',
+    backgroundColor: '#1E90FF',
     borderRadius: 15,
     padding: 20,
     width: '80%',
   },
-  title: {
-    color: '#F4EEE7',
-    fontSize: 18,
-    marginBottom: 10,
-  },
   input: {
-    backgroundColor: '#F4EEE7',
-    padding: 10,
-    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
     marginBottom: 10,
   },
   button: {
-    backgroundColor: '#F4EEE7',
+    backgroundColor: '#FFFFFF',
     borderRadius: 25,
     paddingVertical: 12,
     alignItems: 'center',
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    color: '#72AB86',
+    color: '#1E90FF',
     fontWeight: 'bold',
   },
   buttonRegister: {
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   registerText: {
-    color: '#F4EEE7',
+    color: '#FFFFFF',
     textAlign: 'center',
   },
 });

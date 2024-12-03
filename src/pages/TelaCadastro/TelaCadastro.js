@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Alert } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
+import { Button, TextInput as PaperTextInput } from 'react-native-paper'; // Importando componentes do react-native-paper
 import httpservice from '../../routes/http';
 
 export default function CreateAccount() {
@@ -50,10 +43,7 @@ export default function CreateAccount() {
   };
 
   return (
-    <ScrollView
-      style={styles.container}
-      keyboardShouldPersistTaps="handled" // Permitir fechar o teclado ao tocar fora dos inputs
-    >
+    <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
       <Animatable.View
         animation="fadeInLeft"
         delay={500}
@@ -63,45 +53,55 @@ export default function CreateAccount() {
       </Animatable.View>
       <Animatable.View animation="fadeInUp" style={styles.containerForm}>
         <Text style={styles.title}>CPF</Text>
-        <TextInput
+        <PaperTextInput
           placeholder="Digite seu CPF..."
           style={styles.input}
           value={cpf}
           onChangeText={(text) => setCpf(text)}
+          mode="outlined"
         />
         <Text style={styles.title}>Nome Completo</Text>
-        <TextInput
+        <PaperTextInput
           placeholder="Digite seu nome completo..."
           style={styles.input}
           value={name}
           onChangeText={(text) => setName(text)}
+          mode="outlined"
         />
         <Text style={styles.title}>Email</Text>
-        <TextInput
+        <PaperTextInput
           placeholder="Digite seu email..."
           style={styles.input}
           value={email}
           onChangeText={(text) => setEmail(text)}
+          mode="outlined"
         />
         <Text style={styles.title}>Senha</Text>
-        <TextInput
+        <PaperTextInput
           placeholder="Digite sua senha"
           style={styles.input}
           secureTextEntry={true}
           value={password}
           onChangeText={(text) => setPassword(text)}
+          mode="outlined"
         />
         <Text style={styles.title}>Confirme sua senha</Text>
-        <TextInput
+        <PaperTextInput
           placeholder="Confirme sua senha"
           style={styles.input}
           secureTextEntry={true}
           value={confirmpassword}
           onChangeText={(text) => setConfirmPassword(text)}
+          mode="outlined"
         />
-        <TouchableOpacity style={styles.button} onPress={onSubmit}>
-          <Text style={styles.buttonText}>Cadastrar</Text>
-        </TouchableOpacity>
+        <Button
+          mode="contained"
+          style={styles.button}
+          labelStyle={styles.buttonText}
+          onPress={onSubmit}
+        >
+          Cadastrar
+        </Button>
       </Animatable.View>
     </ScrollView>
   );
@@ -110,7 +110,7 @@ export default function CreateAccount() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F4EEE7',
+    backgroundColor: '#EAF6FF',
     paddingTop: 40,
   },
   containerHeader: {
@@ -118,29 +118,27 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   headerText: {
-    color: '#72AB86',
+    color: '#1E90FF',
     fontSize: 24,
     fontWeight: 'bold',
   },
   containerForm: {
-    backgroundColor: '#72AB86',
+    backgroundColor: '#1E90FF',
     borderRadius: 15,
     padding: 20,
     marginHorizontal: 20,
   },
   title: {
-    color: '#F4EEE7',
+    color: '#FFFFFF',
     fontSize: 18,
     marginBottom: 10,
   },
   input: {
-    backgroundColor: '#F4EEE7',
-    padding: 10,
-    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
     marginBottom: 10,
   },
   button: {
-    backgroundColor: '#F4EEE7',
+    backgroundColor: '#FFFFFF',
     borderRadius: 25,
     paddingVertical: 12,
     alignItems: 'center',
@@ -148,7 +146,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    color: '#72AB86',
+    color: '#1E90FF',
     fontWeight: 'bold',
   },
 });

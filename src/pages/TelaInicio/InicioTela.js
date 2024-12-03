@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
+import { Text, Button } from 'react-native-paper';
 
 export default function WelcomeScreen() {
   const navigation = useNavigation();
@@ -9,27 +10,27 @@ export default function WelcomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.containerLogo}>
-        <Animatable.Image
-          animation="flipInY"
-          source={require('../../../assets/logo.png')}
-          style={styles.logo}
-          resizeMode="contain"
-        />
+        <Animatable.Text animation="flipInY" style={styles.logo}>
+          CareConnect
+        </Animatable.Text>
       </View>
       <Animatable.View
-        deLay={600}
+        delay={600}
         animation="fadeInUp"
         style={styles.containerForm}
       >
         <Text style={styles.title}>
-          Bem-vindo à nossa loja de camisetas esportivas!
+          Onde o carinho e a proximidade atravessam qualquer distância.
         </Text>
-        <TouchableOpacity
+        {}
+        <Button
+          mode="contained"
           style={styles.button}
-          onPress={() => navigation.navigate('AuthScreens')}
+          labelStyle={styles.buttonText}
+          onPress={() => navigation.navigate('LoginTela')}
         >
-          <Text style={styles.buttonText}>Acessar</Text>
-        </TouchableOpacity>
+          Acessar
+        </Button>
       </Animatable.View>
     </View>
   );
@@ -38,7 +39,7 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F4EEE7',
+    backgroundColor: '#EAF6FF',
   },
   containerLogo: {
     flex: 1,
@@ -47,13 +48,14 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   logo: {
-    width: 200,
-    height: 200,
-    resizeMode: 'contain',
+    fontSize: 38,
+    fontWeight: 'bold',
+    color: '#1E90FF',
+    fontFamily: 'serif',
   },
   containerForm: {
     flex: 1,
-    backgroundColor: '#72AB86',
+    backgroundColor: '#1E90FF',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingHorizontal: '5%',
@@ -61,23 +63,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#F4EEE7',
+    color: '#FFFFFF',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 30,
+    lineHeight: 30,
   },
   button: {
-    backgroundColor: '#F4EEE7',
+    backgroundColor: '#FFFFFF',
     borderRadius: 25,
-    paddingVertical: 12,
+    paddingVertical: 15,
     width: '80%',
     alignItems: 'center',
     justifyContent: 'center',
+    elevation: 5,
   },
   buttonText: {
-    fontSize: 18,
-    color: 'black',
+    fontSize: 20,
+    color: '#1E90FF',
     fontWeight: 'bold',
   },
 });

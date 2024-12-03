@@ -2,12 +2,12 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 
-import WelcomeScreen from '../pages/WelcomeScreen/WelcomeScreen';
-import AuthScreens from '../pages/AuthScreens/AuthScreens';
+import TelaInicio from '../pages/TelaInicio/InicioTela';
+import LoginTela from '../pages/LoginTela/TelaLogin';
 import ProductScreen from '../pages/ProductScreens/ProductScreen';
 import Cart from '../pages/Cart/Cart';
 import Chat from '../pages/Chat/Chat';
-import CreateAccount from '../pages/CreateAccount/CreateAccount';
+import TelaCadastro from '../pages/TelaCadastro/TelaCadastro';
 import User from '../pages/User/User';
 
 const Stack = createNativeStackNavigator();
@@ -16,13 +16,13 @@ export default function Routes() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="WelcomeScreen"
-        component={WelcomeScreen}
+        name="TelaInicio"
+        component={TelaInicio}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="AuthScreens"
-        component={AuthScreens}
+        name="LoginTela"
+        component={LoginTela}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -41,8 +41,8 @@ export default function Routes() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="CreateAccount"
-        component={CreateAccount}
+        name="TelaCadastro"
+        component={TelaCadastro}
         options={{ headerShown: false }}
       />
       <Stack.Screen
